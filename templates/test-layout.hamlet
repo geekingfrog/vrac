@@ -1,0 +1,9 @@
+$doctype 5
+<html lang="en">
+  <head>
+    <title>#{pageTitle pc}
+
+    ^{pageHead pc}
+
+  <body>
+    ^{pageBody pc}

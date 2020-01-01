@@ -1,0 +1,4 @@
+<h2 .#{headerClass}>Coucou upload
+<form method=post action=@{GenUrlR} enctype=#{enctype}>
+  ^{formWidget}
+  <button>Submit
