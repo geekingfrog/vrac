@@ -13,3 +13,4 @@
 /genurl GenUrlR GET POST
 
 /f/#FilePath FilePageR GET POST
+/gen GenTokenR GET POST

@@ -47,6 +47,8 @@ dependencies:
 - persistent-template
 - persistent-sqlite
 - filepath
+- safe-exceptions
+- lifted-base
 
 # The library contains all of our application code. The executable
 # defined below is just a thin wrapper.

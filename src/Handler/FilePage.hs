@@ -9,10 +9,9 @@ import Import as Im
 import qualified Text.Hamlet as H
 import qualified Yesod.Form  as Form
 import qualified Yesod.Core  as Y.Co
-import qualified Data.Text   as Tx
 import System.FilePath ((</>))
 
-data UploadInfo = UploadInfo
+newtype UploadInfo = UploadInfo
   { fileInfo :: FileInfo
   }
 
@@ -54,12 +53,13 @@ getFilePageR filePath = do
 
 postFilePageR :: FilePath -> Im.Handler Html
 postFilePageR filePath = do
-  ((formResult, formWidget), enctype) <- Form.runFormPost uploadForm
+  ((formResult, _formWidget), enctype) <- Form.runFormPost uploadForm
   case formResult of
     Form.FormSuccess uploadInfo -> do
       let fn = Y.Co.fileName (fileInfo uploadInfo)
       let saveLocation = uploadDirectory </> filePath
       liftIO $ putStrLn $ "content type is: " <> Y.Co.fileContentType (fileInfo uploadInfo)
+      -- liftIO $ putStrLn $ "enctype is: " <> showTx enctype
       liftIO $ Y.Co.fileMove (fileInfo uploadInfo) saveLocation
       vracLayout $ do
         setTitle [shamlet|#{fn}|]

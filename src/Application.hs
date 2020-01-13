@@ -1,3 +1,7 @@
+{-# LANGUAGE DerivingVia #-}
+{-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
@@ -37,8 +41,8 @@ import System.Log.FastLogger                (defaultBufSize, newStdoutLoggerSet,
 
 import qualified Database.SQLite.Simple as SQL
 
-import qualified Database.Persist.Sql as P.Sql
-import qualified DB.Token
+-- import qualified Database.Persist.Sql as P.Sql
+-- import qualified DB.Token
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
@@ -47,6 +51,8 @@ import Handler.Home
 import Handler.Comment
 import Handler.GenUrl
 import Handler.FilePage
+import Handler.GenToken
+
 
 -- This line actually creates our YesodDispatch instance. It is the second half
 -- of the call to mkYesodData which occurs in Foundation.hs. Please see the
