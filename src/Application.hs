@@ -49,7 +49,6 @@ import qualified Database.SQLite.Simple as SQL
 import Handler.Common
 import Handler.Home
 import Handler.Comment
-import Handler.GenUrl
 import Handler.FilePage
 import Handler.GenToken
 

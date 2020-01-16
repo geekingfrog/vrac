@@ -4,6 +4,8 @@ PRAGMA encoding="UTF-8";
 PRAGMA foreign_keys = ON;
 
 DROP TABLE IF EXISTS token;
+DROP TABLE IF EXISTS file_metadata;
+DROP TABLE IF EXISTS token_file_metadata;
 
 CREATE TABLE IF NOT EXISTS token
   ( id INTEGER PRIMARY KEY
@@ -12,22 +14,19 @@ CREATE TABLE IF NOT EXISTS token
   , expires_at DATETIME
   , is_valid BOOL NOT NULL DEFAULT true
   , created_at DATETIME NOT NULL DEFAULT (datetime('now'))
+  , deleted_at DATETIME
   );
 
--- ALTER TABLE token
---   ADD CONSTRAINT pk_token UNIQUE (name, is_valid)
+CREATE TABLE IF NOT EXISTS file_metadata
+  ( id TEXT PRIMARY KEY
+  , file_name TEXT NOT NULL
+  , file_content_type TEXT NOT NULL
+  , file_local_path TEXT NOT NULL
+  -- ^ where to find the file on the local disk
+  , token_id INTEGER NOT NULL
+  , CONSTRAINT fk_token FOREIGN KEY(token_id) REFERENCES token(id)
+  );
 
--- drop table if exists file_metadata;
--- CREATE TABLE IF NOT EXISTS file_metadata
---   ( id INTEGER PRIMARY KEY AUTOINCREMENT
---   , file_name TEXT NOT NULL
---   , file_content_type TEXT NOT NULL
---   , file_size INTEGER NOT NULL
---   -- ^ in byte
---   , file_local_path TEXT NOT NULL
---   -- ^ where to find the file on the local disk
---   );
---
 -- DROP TABLE IF EXISTS url;
 -- CREATE TABLE IF NOT EXISTS url
 --   ( id TEXT PRIMARY KEY

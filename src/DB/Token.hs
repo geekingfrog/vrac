@@ -18,12 +18,13 @@ import qualified Database.SQLite.Simple.FromRow as From
 import qualified Database.SQLite.Simple.FromField as FromF
 
 data Token = Token
-  { _tTokenId :: Int64
+  { _tTokenId :: TokenId
   , _tName :: TokenName
   , _tMaxSize :: Maybe Word64
   , _tExpiresAt :: T.UTCTime
   , _tIsValid :: Bool
   , _tCreatedAt :: T.UTCTime
+  , _tDeletedAt :: Maybe T.UTCTime
   }
   deriving stock (Show, Generic)
 
@@ -31,6 +32,10 @@ data Token = Token
 -- deriving From.FromRow via (G.FromRowT Token)
 instance From.FromRow Token where
   fromRow = G.unFromRowT <$> From.fromRow
+
+newtype TokenId = TokenId { getTokenId :: Int64 }
+  deriving stock (Show)
+  deriving newtype (FromF.FromField, ToF.ToField)
 
 data TokenInsert = TokenInsert
   { _tiName :: TokenName

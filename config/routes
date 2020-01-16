@@ -10,7 +10,5 @@
 
 /comments CommentR POST
 
-/genurl GenUrlR GET POST
-
-/f/#FilePath FilePageR GET POST
+/f/#TokenPath FilePageR GET POST
 /gen GenTokenR GET POST

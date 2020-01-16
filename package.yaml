@@ -49,6 +49,10 @@ dependencies:
 - filepath
 - safe-exceptions
 - lifted-base
+- uuid
+- blaze-markup
+- http-types
+- unix
 
 # The library contains all of our application code. The executable
 # defined below is just a thin wrapper.
@@ -61,12 +65,14 @@ library:
       - -Wall
       - -fwarn-tabs
       - -O0
+      - -Werror
       cpp-options: -DDEVELOPMENT
     else:
       ghc-options:
       - -Wall
       - -fwarn-tabs
       - -O2
+      - -Werror
 
 # Runnable executable for our application
 executables:

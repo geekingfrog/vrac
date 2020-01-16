@@ -19,30 +19,26 @@ import qualified Yesod.Core  as Y.Co
 import qualified Data.Time.Clock as T
 import qualified DB.Class as DB
 import qualified DB.Token as DB.Tok
--- import qualified Control.Exception.Safe as Exc
-import qualified Control.Exception as Exc
-
-import qualified Data.Text as Tx
 
 data Token = Token
   { name :: Text
   , maxSize :: MaxSize
   , expiresAt :: Expiration
   }
-  deriving stock (Eq)
+  deriving stock (Show, Eq)
 
 data MaxSize
   = SizeLimited SizeInByte
   | Unlimited
-  deriving stock (Eq)
+  deriving stock (Show, Eq)
 
 data Expiration
   = ExpiresIn T.NominalDiffTime
   | DoesntExpire
-  deriving stock (Eq)
+  deriving stock (Show, Eq)
 
 newtype SizeInByte = SizeInByte { getSizeInByte :: Word64 }
-  deriving newtype (Eq)
+  deriving newtype (Show, Eq)
 
 toDBO :: T.UTCTime -> Token -> DB.Tok.TokenInsert
 toDBO now tok = DB.Tok.TokenInsert
@@ -109,11 +105,11 @@ postGenTokenR = do
   case result of
     Form.FormSuccess token -> do
       now <- liftIO T.getCurrentTime
+      $(logInfo) ("persisting token: " <> showTx token)
       try (DB.persistToken (toDBO now token)) >>= \case
-        Right _ -> Y.Co.redirect (FilePageR (Tx.unpack (name token)))
+        Right _ -> Y.Co.redirect (FilePageR (coerce (name token)))
         Left (_ :: DB.ValidTokenAlreadyExist) ->
           reRender formWidget enctype (Just $ "A valid token with name " <> (name token) <> " already exist")
-        Left otherExc -> liftIO (Exc.throwIO otherExc)
     _ -> reRender formWidget enctype Nothing
 
   where

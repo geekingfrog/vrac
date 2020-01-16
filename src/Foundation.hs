@@ -49,6 +49,10 @@ data MenuTypes
     = NavbarLeft MenuItem
     | NavbarRight MenuItem
 
+newtype TokenPath = TokenPath { getTokenPath :: Text }
+  deriving stock (Show, Eq, Read)
+  deriving PathPiece via Text
+
 -- This is where we define all of the routes in our application. For a full
 -- explanation of the syntax, please see:
 -- http://www.yesodweb.com/book/routing-and-handlers
@@ -181,12 +185,14 @@ instance Yesod App where
     makeLogger :: App -> IO Logger
     makeLogger = return . appLogger
 
+    -- TODO get max file size from token
     maximumContentLengthIO :: Yesod App => App -> Maybe (Route App) -> IO (Maybe Word64)
-    maximumContentLengthIO _ mbRoute = do
-      putStrLn $ "checking max content length for " <> showTx mbRoute
-      case mbRoute of
-        Just GenUrlR -> pure $ Just $ 5 * 1024 * 1024
-        _ -> pure Nothing
+    maximumContentLengthIO _ _mbRoute = do
+      putStrLn $ "checking max content length for " <> showTx _mbRoute
+      pure Nothing
+      -- case mbRoute of
+      --   Just GenUrlR -> pure $ Just $ 5 * 1024 * 1024
+      --   _ -> pure Nothing
 
 -- Define breadcrumbs.
 instance YesodBreadcrumbs App where
